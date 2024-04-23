@@ -1,21 +1,18 @@
-import express from 'express'
-import swaggerUi from 'swagger-ui-express'
-import swaggerJsDoc from 'swagger-jsdoc'
-import { swaggerDocOptions } from './swaggerDocOptions'
-import { NseIndia, ApiList } from './index'
-import {
-    getGainersAndLosersByIndex,
-    getMostActiveEquities
-} from './helpers'
+import express from "express";
+import swaggerUi from "swagger-ui-express";
+import swaggerJsDoc from "swagger-jsdoc";
+import { swaggerDocOptions } from "./swaggerDocOptions";
+import { NseIndia, ApiList } from "./index";
+import { getGainersAndLosersByIndex, getMostActiveEquities } from "./helpers";
 
-const app = express()
-const port = process.env.PORT || 3000
-const hostUrl = process.env.HOST_URL || `http://localhost:${port}`
-const nseIndia = new NseIndia()
+const app = express();
+const port = process.env.PORT || 3000;
+const hostUrl = process.env.HOST_URL || `http://localhost:${port}`;
+const nseIndia = new NseIndia();
 
 const openapiSpecification = swaggerJsDoc(swaggerDocOptions);
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 
 /**
  * @openapi
@@ -32,13 +29,13 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
  *       400:
  *         description: Returns a JSON error object of API call
  */
-app.get('/', async (_req, res) => {
-    try {
-        res.json(await nseIndia.getDataByEndpoint(ApiList.MARKET_STATUS))
-    } catch (error) {
-        res.status(400).json(error)
-    }
-})
+app.get("/", async (_req, res) => {
+  try {
+    res.json(await nseIndia.getDataByEndpoint(ApiList.MARKET_STATUS));
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 /**
  * @openapi
@@ -53,9 +50,9 @@ app.get('/', async (_req, res) => {
  *       200:
  *         description: Returns a JSON object of open api specification
  */
- app.get('/api/v1/swagger.json',(_req,res)=>{
-    res.json(openapiSpecification)
-})
+app.get("/api/v1/swagger.json", (_req, res) => {
+  res.json(openapiSpecification);
+});
 
 /**
  * @openapi
@@ -72,13 +69,13 @@ app.get('/', async (_req, res) => {
  *       400:
  *         description: Returns a JSON error object of API call
  */
-app.get('/api/glossary', async (_req, res) => {
-    try {
-        res.json(await nseIndia.getDataByEndpoint(ApiList.GLOSSARY))
-    } catch (error) {
-        res.status(400).json(error)
-    }
-})
+app.get("/api/glossary", async (_req, res) => {
+  try {
+    res.json(await nseIndia.getDataByEndpoint(ApiList.GLOSSARY));
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 /**
  * @openapi
@@ -95,13 +92,13 @@ app.get('/api/glossary', async (_req, res) => {
  *       400:
  *         description: Returns a JSON error object of API call
  */
-app.get('/api/marketStatus', async (_req, res) => {
-    try {
-        res.json(await nseIndia.getDataByEndpoint(ApiList.MARKET_STATUS))
-    } catch (error) {
-        res.status(400).json(error)
-    }
-})
+app.get("/api/marketStatus", async (_req, res) => {
+  try {
+    res.json(await nseIndia.getDataByEndpoint(ApiList.MARKET_STATUS));
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 /**
  * @openapi
@@ -118,13 +115,13 @@ app.get('/api/marketStatus', async (_req, res) => {
  *       400:
  *         description: Returns a JSON error object of API call
  */
-app.get('/api/marketTurnover', async (_req, res) => {
-    try {
-        res.json(await nseIndia.getDataByEndpoint(ApiList.MARKET_TURNOVER))
-    } catch (error) {
-        res.status(400).json(error)
-    }
-})
+app.get("/api/marketTurnover", async (_req, res) => {
+  try {
+    res.json(await nseIndia.getDataByEndpoint(ApiList.MARKET_TURNOVER));
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 /**
  * @openapi
@@ -141,13 +138,13 @@ app.get('/api/marketTurnover', async (_req, res) => {
  *       400:
  *         description: Returns a JSON error object of API call
  */
-app.get('/api/equityMaster', async (_req, res) => {
-    try {
-        res.json(await nseIndia.getDataByEndpoint(ApiList.EQUITY_MASTER))
-    } catch (error) {
-        res.status(400).json(error)
-    }
-})
+app.get("/api/equityMaster", async (_req, res) => {
+  try {
+    res.json(await nseIndia.getDataByEndpoint(ApiList.EQUITY_MASTER));
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 /**
  * @openapi
@@ -172,18 +169,18 @@ app.get('/api/equityMaster', async (_req, res) => {
  *       400:
  *         description: Returns a JSON error object of API call
  */
-app.get('/api/holidays', async (req, res) => {
-    try {
-        const { type } = req.query
-        if (type === 'clearing') {
-            res.json(await nseIndia.getDataByEndpoint(ApiList.HOLIDAY_CLEARING))
-        } else {
-            res.json(await nseIndia.getDataByEndpoint(ApiList.HOLIDAY_TRADING))
-        }
-    } catch (error) {
-        res.status(400).json(error)
+app.get("/api/holidays", async (req, res) => {
+  try {
+    const { type } = req.query;
+    if (type === "clearing") {
+      res.json(await nseIndia.getDataByEndpoint(ApiList.HOLIDAY_CLEARING));
+    } else {
+      res.json(await nseIndia.getDataByEndpoint(ApiList.HOLIDAY_TRADING));
     }
-})
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 /**
  * @openapi
@@ -208,18 +205,18 @@ app.get('/api/holidays', async (req, res) => {
  *       400:
  *         description: Returns a JSON error object of API call
  */
-app.get('/api/circulars', async (req, res) => {
-    try {
-        const { isLatest } = req.query
-        if (isLatest === 'true') {
-            res.json(await nseIndia.getDataByEndpoint(ApiList.LATEST_CIRCULARS))
-        } else {
-            res.json(await nseIndia.getDataByEndpoint(ApiList.CIRCULARS))
-        }
-    } catch (error) {
-        res.status(400).json(error)
+app.get("/api/circulars", async (req, res) => {
+  try {
+    const { isLatest } = req.query;
+    if (isLatest === "true") {
+      res.json(await nseIndia.getDataByEndpoint(ApiList.LATEST_CIRCULARS));
+    } else {
+      res.json(await nseIndia.getDataByEndpoint(ApiList.CIRCULARS));
     }
-})
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 /**
  * @openapi
@@ -244,20 +241,28 @@ app.get('/api/circulars', async (req, res) => {
  *       400:
  *         description: Returns a JSON error object of API call
  */
-app.get('/api/mergedDailyReports', async (req, res) => {
-    try {
-        const { key } = req.query
-        if (key === 'debt') {
-            res.json(await nseIndia.getDataByEndpoint(ApiList.MERGED_DAILY_REPORTS_DEBT))
-        } else if (key === 'derivatives') {
-            res.json(await nseIndia.getDataByEndpoint(ApiList.MERGED_DAILY_REPORTS_DERIVATIVES))
-        } else {
-            res.json(await nseIndia.getDataByEndpoint(ApiList.MERGED_DAILY_REPORTS_CAPITAL))
-        }
-    } catch (error) {
-        res.status(400).json(error)
+app.get("/api/mergedDailyReports", async (req, res) => {
+  try {
+    const { key } = req.query;
+    if (key === "debt") {
+      res.json(
+        await nseIndia.getDataByEndpoint(ApiList.MERGED_DAILY_REPORTS_DEBT)
+      );
+    } else if (key === "derivatives") {
+      res.json(
+        await nseIndia.getDataByEndpoint(
+          ApiList.MERGED_DAILY_REPORTS_DERIVATIVES
+        )
+      );
+    } else {
+      res.json(
+        await nseIndia.getDataByEndpoint(ApiList.MERGED_DAILY_REPORTS_CAPITAL)
+      );
     }
-})
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 /**
  * @openapi
@@ -274,14 +279,14 @@ app.get('/api/mergedDailyReports', async (req, res) => {
  *       400:
  *         description: Returns a JSON error object of API call
  */
-app.get('/api/allIndices', async (_req, res) => {
-    try {
-        const allIndices = await nseIndia.getDataByEndpoint(ApiList.ALL_INDICES)
-        res.json(allIndices)
-    } catch (error) {
-        res.status(400).json(error)
-    }
-})
+app.get("/api/allIndices", async (_req, res) => {
+  try {
+    const allIndices = await nseIndia.getDataByEndpoint(ApiList.ALL_INDICES);
+    res.json(allIndices);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 /**
  * @openapi
@@ -298,14 +303,14 @@ app.get('/api/allIndices', async (_req, res) => {
  *       400:
  *         description: Returns a JSON error object of API call
  */
-app.get('/api/indexNames', async (_req, res) => {
-    try {
-        const indexNames = await nseIndia.getDataByEndpoint(ApiList.INDEX_NAMES)
-        res.json(indexNames)
-    } catch (error) {
-        res.status(400).json(error)
-    }
-})
+app.get("/api/indexNames", async (_req, res) => {
+  try {
+    const indexNames = await nseIndia.getDataByEndpoint(ApiList.INDEX_NAMES);
+    res.json(indexNames);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 /**
  * @openapi
@@ -322,14 +327,23 @@ app.get('/api/indexNames', async (_req, res) => {
  *       400:
  *         description: Returns a JSON error object of API call
  */
-app.get('/api/allSymbols', async (_req, res) => {
-    try {
-        const symbols = await nseIndia.getAllStockSymbols()
-        res.json(symbols)
-    } catch (error) {
-        res.status(400).json(error)
-    }
-})
+app.get("/api/allSymbols", async (_req, res) => {
+  try {
+    const symbols = await nseIndia.getAllStockSymbols();
+    res.json(symbols);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
+
+app.get("/api/live", async (_req, res) => {
+  try {
+    const symbols = await nseIndia.getLiveEquityDerivatives();
+    res.json(symbols);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 /**
  * @openapi
@@ -354,13 +368,13 @@ app.get('/api/allSymbols', async (_req, res) => {
  *       400:
  *         description: Returns a JSON error object of API call
  */
-app.get('/api/equity/:symbol', async (req, res) => {
-    try {
-        res.json(await nseIndia.getEquityDetails(req.params.symbol))
-    } catch (error) {
-        res.status(400).json(error)
-    }
-})
+app.get("/api/equity/:symbol", async (req, res) => {
+  try {
+    res.json(await nseIndia.getEquityDetails(req.params.symbol));
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 /**
  * @openapi
@@ -385,13 +399,13 @@ app.get('/api/equity/:symbol', async (req, res) => {
  *       400:
  *         description: Returns a JSON error object of API call
  */
-app.get('/api/equity/series/:symbol', async (req, res) => {
-    try {
-        res.json(await nseIndia.getEquitySeries(req.params.symbol))
-    } catch (error) {
-        res.status(400).json(error)
-    }
-})
+app.get("/api/equity/series/:symbol", async (req, res) => {
+  try {
+    res.json(await nseIndia.getEquitySeries(req.params.symbol));
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 /**
  * @openapi
@@ -416,13 +430,13 @@ app.get('/api/equity/series/:symbol', async (req, res) => {
  *       400:
  *         description: Returns a JSON error object of API call
  */
-app.get('/api/equity/tradeInfo/:symbol', async (req, res) => {
-    try {
-        res.json(await nseIndia.getEquityTradeInfo(req.params.symbol))
-    } catch (error) {
-        res.status(400).json(error)
-    }
-})
+app.get("/api/equity/tradeInfo/:symbol", async (req, res) => {
+  try {
+    res.json(await nseIndia.getEquityTradeInfo(req.params.symbol));
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 /**
  * @openapi
@@ -447,13 +461,13 @@ app.get('/api/equity/tradeInfo/:symbol', async (req, res) => {
  *       400:
  *         description: Returns a JSON error object of API call
  */
-app.get('/api/equity/corporateInfo/:symbol', async (req, res) => {
-    try {
-        res.json(await nseIndia.getEquityCorporateInfo(req.params.symbol))
-    } catch (error) {
-        res.status(400).json(error)
-    }
-})
+app.get("/api/equity/corporateInfo/:symbol", async (req, res) => {
+  try {
+    res.json(await nseIndia.getEquityCorporateInfo(req.params.symbol));
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 /**
  * @openapi
@@ -485,18 +499,18 @@ app.get('/api/equity/corporateInfo/:symbol', async (req, res) => {
  *       400:
  *         description: Returns a JSON error object of API call
  */
-app.get('/api/equity/intraday/:symbol', async (req, res) => {
-    try {
-        const isPreOpen = req.query.preOpen as string
-        if (isPreOpen === "true") {
-            res.json(await nseIndia.getEquityIntradayData(req.params.symbol, true))
-        } else {
-            res.json(await nseIndia.getEquityIntradayData(req.params.symbol))
-        }
-    } catch (error) {
-        res.status(400).json(error)
+app.get("/api/equity/intraday/:symbol", async (req, res) => {
+  try {
+    const isPreOpen = req.query.preOpen as string;
+    if (isPreOpen === "true") {
+      res.json(await nseIndia.getEquityIntradayData(req.params.symbol, true));
+    } else {
+      res.json(await nseIndia.getEquityIntradayData(req.params.symbol));
     }
-})
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 /**
  * @openapi
@@ -535,29 +549,35 @@ app.get('/api/equity/intraday/:symbol', async (req, res) => {
  *       400:
  *         description: Returns a JSON error object of API call
  */
-app.get('/api/equity/historical/:symbol', async (req, res) => {
-    try {
-        const dateStart = req.query.dateStart as string
-        const dateEnd = req.query.dateEnd as string
-        if (dateStart && dateEnd) {
-            const start = new Date(dateStart)
-            const end = new Date(dateEnd)
-            if (start.getTime() > 0 && end.getTime() > 0) {
-                const range = {
-                    start,
-                    end
-                }
-                res.json(await nseIndia.getEquityHistoricalData(req.params.symbol, range))
-            } else {
-                res.status(400).json({ error: 'Invalid date format. Please use the format (YYYY-MM-DD)' })
-            }
-        } else {
-            res.json(await nseIndia.getEquityHistoricalData(req.params.symbol))
-        }
-    } catch (error) {
-        res.status(400).json(error)
+app.get("/api/equity/historical/:symbol", async (req, res) => {
+  try {
+    const dateStart = req.query.dateStart as string;
+    const dateEnd = req.query.dateEnd as string;
+    if (dateStart && dateEnd) {
+      const start = new Date(dateStart);
+      const end = new Date(dateEnd);
+      if (start.getTime() > 0 && end.getTime() > 0) {
+        const range = {
+          start,
+          end,
+        };
+        res.json(
+          await nseIndia.getEquityHistoricalData(req.params.symbol, range)
+        );
+      } else {
+        res
+          .status(400)
+          .json({
+            error: "Invalid date format. Please use the format (YYYY-MM-DD)",
+          });
+      }
+    } else {
+      res.json(await nseIndia.getEquityHistoricalData(req.params.symbol));
     }
-})
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 /**
  * @openapi
@@ -582,16 +602,13 @@ app.get('/api/equity/historical/:symbol', async (req, res) => {
  *       400:
  *         description: Returns a JSON error object of API call
  */
-app.get('/api/index/:indexSymbol', async (req, res) => {
-    try {
-        res.json(await nseIndia.getEquityStockIndices(req.params.indexSymbol))
-    } catch (error) {
-        res.status(400).json(error)
-    }
-})
-
-
-
+app.get("/api/index/:indexSymbol", async (req, res) => {
+  try {
+    res.json(await nseIndia.getEquityStockIndices(req.params.indexSymbol));
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 /**
  * @openapi
@@ -624,13 +641,13 @@ app.get('/api/index/:indexSymbol', async (req, res) => {
  *         description: Returns a JSON error object of API call
  */
 
-app.get('/api/option-chain/:indexSymbol', async (req, res) => {
-    try {
-        res.json(await nseIndia.getOptionChain(req.params.indexSymbol))
-    } catch (error) {
-        res.status(400).json(error)
-    }
-})
+app.get("/api/option-chain/:indexSymbol", async (req, res) => {
+  try {
+    res.json(await nseIndia.getOptionChain(req.params.indexSymbol));
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 /**
  * @openapi
@@ -662,18 +679,20 @@ app.get('/api/option-chain/:indexSymbol', async (req, res) => {
  *       400:
  *         description: Returns a JSON error object of API call
  */
-app.get('/api/index/intraday/:indexSymbol', async (req, res) => {
-    try {
-        const isPreOpen = req.query.preOpen as string
-        if (isPreOpen === "true") {
-            res.json(await nseIndia.getIndexIntradayData(req.params.indexSymbol, true))
-        } else {
-            res.json(await nseIndia.getIndexIntradayData(req.params.indexSymbol))
-        }
-    } catch (error) {
-        res.status(400).json(error)
+app.get("/api/index/intraday/:indexSymbol", async (req, res) => {
+  try {
+    const isPreOpen = req.query.preOpen as string;
+    if (isPreOpen === "true") {
+      res.json(
+        await nseIndia.getIndexIntradayData(req.params.indexSymbol, true)
+      );
+    } else {
+      res.json(await nseIndia.getIndexIntradayData(req.params.indexSymbol));
     }
-})
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 /**
  * @openapi
@@ -712,29 +731,40 @@ app.get('/api/index/intraday/:indexSymbol', async (req, res) => {
  *       400:
  *         description: Returns a JSON error object of API call
  */
- app.get('/api/index/historical/:indexSymbol', async (req, res) => {
-    try {
-        const dateStart = req.query.dateStart as string
-        const dateEnd = req.query.dateEnd as string
-        if (dateStart && dateEnd) {
-            const start = new Date(dateStart)
-            const end = new Date(dateEnd)
-            if (start.getTime() > 0 && end.getTime() > 0) {
-                const range = {
-                    start,
-                    end
-                }
-                res.json(await nseIndia.getIndexHistoricalData(req.params.indexSymbol, range))
-            } else {
-                res.status(400).json({ error: 'Invalid date format. Please use the format (YYYY-MM-DD)' })
-            }
-        } else {
-            res.status(400).json({ error: 'Missing arguments "dateStart" or "dateEnd". Please pass those argumets.' })
-        }
-    } catch (error) {
-        res.status(400).json(error)
+app.get("/api/index/historical/:indexSymbol", async (req, res) => {
+  try {
+    const dateStart = req.query.dateStart as string;
+    const dateEnd = req.query.dateEnd as string;
+    if (dateStart && dateEnd) {
+      const start = new Date(dateStart);
+      const end = new Date(dateEnd);
+      if (start.getTime() > 0 && end.getTime() > 0) {
+        const range = {
+          start,
+          end,
+        };
+        res.json(
+          await nseIndia.getIndexHistoricalData(req.params.indexSymbol, range)
+        );
+      } else {
+        res
+          .status(400)
+          .json({
+            error: "Invalid date format. Please use the format (YYYY-MM-DD)",
+          });
+      }
+    } else {
+      res
+        .status(400)
+        .json({
+          error:
+            'Missing arguments "dateStart" or "dateEnd". Please pass those argumets.',
+        });
     }
-})
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 /**
  * @openapi
@@ -759,13 +789,13 @@ app.get('/api/index/intraday/:indexSymbol', async (req, res) => {
  *       400:
  *         description: Returns a JSON error object of API call
  */
- app.get('/api/gainersAndLosers/:indexSymbol', async (req, res) => {
-    try {
-        res.json(await getGainersAndLosersByIndex(req.params.indexSymbol))
-    } catch (error) {
-        res.status(400).json(error)
-    }
-})
+app.get("/api/gainersAndLosers/:indexSymbol", async (req, res) => {
+  try {
+    res.json(await getGainersAndLosersByIndex(req.params.indexSymbol));
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 /**
  * @openapi
@@ -790,17 +820,16 @@ app.get('/api/index/intraday/:indexSymbol', async (req, res) => {
  *       400:
  *         description: Returns a JSON error object of API call
  */
- app.get('/api/mostActive/:indexSymbol', async (req, res) => {
-    try {
-        res.json(await getMostActiveEquities(req.params.indexSymbol))
-    } catch (error) {
-        res.status(400).json(error)
-    }
-})
+app.get("/api/mostActive/:indexSymbol", async (req, res) => {
+  try {
+    res.json(await getMostActiveEquities(req.params.indexSymbol));
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 app.listen(port, () => {
-    console.log(`NseIndia App started in port ${port}`);
-    console.log(`Open ${hostUrl} in browser.`);
-    console.log(`For API docs: ${hostUrl}/api-docs`);
-
-})
+  console.log(`NseIndia App started in port ${port}`);
+  console.log(`Open ${hostUrl} in browser.`);
+  console.log(`For API docs: ${hostUrl}/api-docs`);
+});
